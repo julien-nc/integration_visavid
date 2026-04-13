@@ -67,7 +67,10 @@
 								v-if="option.icon"
 								class="option-icon"
 								:size="20" />
-							<NcHighlight :text="option.label" :search="query" class="multiselect-option-title" />
+							<NcHighlight :text="option.label"
+								:search="query"
+								:title="option.label"
+								class="multiselect-option-title" />
 						</div>
 					</template>
 					<template #selected-option="option">
@@ -75,7 +78,8 @@
 							<component :is="option.icon"
 								v-if="option.icon"
 								:size="20" />
-							<span class="selected-option-title">
+							<span class="selected-option-title"
+								:title="option.label">
 								{{ option.label }}
 							</span>
 						</div>
@@ -107,7 +111,8 @@
 								v-if="option.icon"
 								class="option-icon"
 								:size="20" />
-							<span>
+							<span class="checkbox-label"
+								:title="option.label">
 								{{ option.label }}
 							</span>
 						</div>
@@ -125,7 +130,8 @@
 								v-if="option.icon"
 								class="option-icon"
 								:size="20" />
-							<span>
+							<span class="checkbox-label"
+								:title="option.label">
 								{{ option.label }}
 							</span>
 						</div>
@@ -141,7 +147,10 @@
 								v-if="field.icon"
 								class="option-icon"
 								:size="20" />
-							{{ field.label }}
+							<span class="checkbox-label"
+								:title="field.label">
+								{{ field.label }}
+							</span>
 						</div>
 					</NcCheckboxRadioSwitch>
 				</div>
@@ -154,7 +163,10 @@
 								v-if="field.icon"
 								class="option-icon"
 								:size="20" />
-							{{ field.label }}
+							<span class="checkbox-label"
+								:title="field.label">
+								{{ field.label }}
+							</span>
 						</div>
 					</NcCheckboxRadioSwitch>
 				</div>
@@ -286,6 +298,13 @@ export default {
 	white-space: nowrap;
 }
 
+:deep(.checkbox-label) {
+	text-overflow: ellipsis;
+	overflow: hidden;
+	white-space: nowrap;
+	flex-shrink: 1;
+}
+
 .creationForm {
 	display: flex;
 	flex-direction: column;
@@ -298,9 +317,11 @@ export default {
 	}
 
 	.fields {
+		width: 100%;
 		display: flex;
 		flex-direction: column;
 		.field {
+			width: 100%;
 			display: flex;
 			align-items: center;
 			justify-content: center;
@@ -314,12 +335,12 @@ export default {
 			> * {
 				margin: 4px;
 				&:last-child {
-					width: 250px;
+					width: 49%;
 				}
 			}
 			.fieldLabelWithIcon {
 				display: flex;
-				width: 250px;
+				width: 49%;
 				label {
 					width: 150px;
 				}
@@ -334,8 +355,8 @@ export default {
 			.textarea-wrapper {
 				textarea {
 					height: 65px;
-					width: 250px;
-					max-width: 250px;
+					width: 49%;
+					max-width: 49%;
 				}
 			}
 			// this fixes the multiline radio label

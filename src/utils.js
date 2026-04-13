@@ -84,6 +84,14 @@ export const fields = {
 		// enabledIcon: TextIcon,
 		// disabledIcon: TextLongIcon,
 	},
+	share1: {
+		icon: ShareVariantIcon,
+		label: t('integration_visavid', 'Switch with a very very very very very very very very long label'),
+		type: 'ncSwitch',
+		default: true,
+		// enabledIcon: TextIcon,
+		// disabledIcon: TextLongIcon,
+	},
 	share2: {
 		label: t('integration_visavid', 'Switch without icon'),
 		type: 'ncSwitch',
@@ -94,6 +102,14 @@ export const fields = {
 	check: {
 		icon: ShareVariantIcon,
 		label: t('integration_visavid', 'Checkbox'),
+		type: 'ncCheckbox',
+		default: true,
+		// enabledIcon: TextIcon,
+		// disabledIcon: TextLongIcon,
+	},
+	check1: {
+		icon: ShareVariantIcon,
+		label: t('integration_visavid', 'Checkbox with a very very very very very very very very long label'),
 		type: 'ncCheckbox',
 		default: true,
 		// enabledIcon: TextIcon,
@@ -114,7 +130,7 @@ export const fields = {
 		options: {
 			one: { id: 'one', label: 'First multiselect value', icon: AccountGroupIcon },
 			two: { id: 'two', label: 'Second multiselect value', icon: AccountGroupOutlineIcon },
-			three: { id: 'three', label: 'Third multiselect long long long value', icon: HomeGroupIcon },
+			three: { id: 'three', label: 'Third multiselect long long long long long long value', icon: HomeGroupIcon },
 			four: { id: 'four', label: 'Fourth multiselect value without icon' },
 		},
 		default: { id: 'one', label: 'First multiselect value', icon: AccountGroupIcon },
@@ -126,7 +142,7 @@ export const fields = {
 		options: {
 			one: { label: 'First radio value', icon: PaletteSwatchIcon },
 			two: { label: 'Second radio value', icon: PaletteSwatchOutlineIcon },
-			three: { label: 'Third radio value with long long long text', icon: PaletteIcon },
+			three: { label: 'Third radio value with  long long long long long long long long long text', icon: PaletteIcon },
 			four: { label: 'Fourth radio value without icon' },
 		},
 		default: 'two',
@@ -138,7 +154,7 @@ export const fields = {
 		options: {
 			one: { label: 'First radio value', icon: PaletteSwatchIcon },
 			two: { label: 'Second radio value', icon: PaletteSwatchOutlineIcon },
-			three: { label: 'Third radio value with long text', icon: PaletteIcon },
+			three: { label: 'Third radio value with long long long long long long long text', icon: PaletteIcon },
 			four: { label: 'Fourth radio value without icon' },
 		},
 		default: 'three',
@@ -150,7 +166,7 @@ export const fields = {
 		options: {
 			one: { label: 'First radio value', icon: PaletteSwatchIcon },
 			two: { label: 'Second radio value', icon: PaletteSwatchOutlineIcon },
-			three: { label: 'Third radio value with long text', icon: PaletteIcon },
+			three: { label: 'Third radio value with long long long long long long long text', icon: PaletteIcon },
 			four: { label: 'Fourth radio value without icon' },
 		},
 		default: ['one', 'three'],

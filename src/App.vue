@@ -63,7 +63,7 @@
 			</NcEmptyContent>
 		</NcAppContent>
 		<NcModal v-if="creationModalOpen"
-			size="normal"
+			size="large"
 			@close="closeCreationModal">
 			<CreationForm
 				@ok-clicked="onCreationValidate"
