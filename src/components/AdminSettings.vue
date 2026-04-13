@@ -1,7 +1,7 @@
 <template>
 	<div id="visavid_prefs" class="section">
 		<h2>
-			<a class="icon icon-visavid" />
+			<VisavidIcon :size="20" />
 			{{ t('integration_visavid', 'Visavid integration') }}
 		</h2>
 		<div class="fields">
@@ -37,6 +37,8 @@
 import ServerIcon from 'vue-material-design-icons/Server.vue'
 import LockIcon from 'vue-material-design-icons/Lock.vue'
 
+import VisavidIcon from './VisavidIcon.vue'
+
 import { loadState } from '@nextcloud/initial-state'
 import { generateUrl } from '@nextcloud/router'
 import axios from '@nextcloud/axios'
@@ -49,6 +51,7 @@ export default {
 	components: {
 		ServerIcon,
 		LockIcon,
+		VisavidIcon,
 	},
 
 	props: [],
@@ -98,35 +101,30 @@ export default {
 </script>
 
 <style scoped lang="scss">
-.fields {
-	display: flex;
-	flex-direction: column;
-	.field {
+#visavid_prefs {
+	h2 {
 		display: flex;
 		align-items: center;
-		margin: 5px 0 5px 0;
-		> * {
-			margin: 0 5px 0 5px;
-		}
-		label {
-			width: 150px;
-		}
-		input {
-			width: 200px;
+		justify-content: start;
+		gap: 8px;
+	}
+	.fields {
+		display: flex;
+		flex-direction: column;
+		.field {
+			display: flex;
+			align-items: center;
+			margin: 5px 0 5px 0;
+			> * {
+				margin: 0 5px 0 5px;
+			}
+			label {
+				width: 150px;
+			}
+			input {
+				width: 200px;
+			}
 		}
 	}
 }
-
-.icon-visavid {
-	background-image: url(./../../img/app-dark.svg);
-	background-size: 23px 23px;
-	height: 23px;
-	margin-bottom: -4px;
-	filter: var(--background-invert-if-dark);
-}
-
-body.theme--dark .icon-visavid {
-	background-image: url(./../../img/app.svg);
-}
-
 </style>
