@@ -12,7 +12,7 @@
 				<div class="linkInputWrapper">
 					<input type="text" :readonly="true" :value="publicLink">
 					<a :href="publicLink" @click.prevent.stop="copyLink(false)">
-						<Button v-tooltip.bottom="{ content: t('integration_visavid', 'Copy to clipboard') }">
+						<NcButton v-tooltip.bottom="{ content: t('integration_visavid', 'Copy to clipboard') }">
 							<template #icon>
 								<ClipboardCheckOutlineIcon v-if="publicLinkCopied"
 									class="copiedIcon"
@@ -20,7 +20,7 @@
 								<ClipboardArrowLeftOutlineIcon v-else
 									:size="20" />
 							</template>
-						</Button>
+						</NcButton>
 					</a>
 				</div>
 			</div>
@@ -32,7 +32,7 @@
 				<div class="linkInputWrapper">
 					<input type="text" :readonly="true" :value="adminLink">
 					<a :href="adminLink" @click.prevent.stop="copyLink(true)">
-						<Button v-tooltip.bottom="{ content: t('integration_visavid', 'Copy to clipboard') }">
+						<NcButton v-tooltip.bottom="{ content: t('integration_visavid', 'Copy to clipboard') }">
 							<template #icon>
 								<ClipboardCheckOutlineIcon v-if="adminLinkCopied"
 									class="copiedIcon"
@@ -40,7 +40,7 @@
 								<ClipboardArrowLeftOutlineIcon v-else
 									:size="20" />
 							</template>
-						</Button>
+						</NcButton>
 					</a>
 				</div>
 			</div>
@@ -133,18 +133,19 @@
 </template>
 
 <script>
-import { fields, Timer } from '../utils'
-import moment from '@nextcloud/moment'
-import ShieldLinkVariantIcon from 'vue-material-design-icons/ShieldLinkVariant'
-import LinkVariantIcon from 'vue-material-design-icons/LinkVariant'
-import ClipboardArrowLeftOutlineIcon from 'vue-material-design-icons/ClipboardArrowLeftOutline'
-import ClipboardCheckOutlineIcon from 'vue-material-design-icons/ClipboardCheckOutline'
-import ToggleSwitchIcon from 'vue-material-design-icons/ToggleSwitch'
-import ToggleSwitchOffOutlineIcon from 'vue-material-design-icons/ToggleSwitchOffOutline'
-import CheckboxMarkedIcon from 'vue-material-design-icons/CheckboxMarked'
-import CheckboxBlankOutlineIcon from 'vue-material-design-icons/CheckboxBlankOutline'
+import ShieldLinkVariantIcon from 'vue-material-design-icons/ShieldLinkVariant.vue'
+import LinkVariantIcon from 'vue-material-design-icons/LinkVariant.vue'
+import ClipboardArrowLeftOutlineIcon from 'vue-material-design-icons/ClipboardArrowLeftOutline.vue'
+import ClipboardCheckOutlineIcon from 'vue-material-design-icons/ClipboardCheckOutline.vue'
+import ToggleSwitchIcon from 'vue-material-design-icons/ToggleSwitch.vue'
+import ToggleSwitchOffOutlineIcon from 'vue-material-design-icons/ToggleSwitchOffOutline.vue'
+import CheckboxMarkedIcon from 'vue-material-design-icons/CheckboxMarked.vue'
+import CheckboxBlankOutlineIcon from 'vue-material-design-icons/CheckboxBlankOutline.vue'
 
-import Button from '@nextcloud/vue/dist/Components/Button'
+import NcButton from '@nextcloud/vue/components/NcButton'
+
+import moment from '@nextcloud/moment'
+import { fields, Timer } from '../utils.js'
 import { showSuccess, showError } from '@nextcloud/dialogs'
 
 export default {
@@ -159,7 +160,7 @@ export default {
 		ToggleSwitchOffOutlineIcon,
 		CheckboxBlankOutlineIcon,
 		CheckboxMarkedIcon,
-		Button,
+		NcButton,
 	},
 
 	props: {
@@ -198,7 +199,7 @@ export default {
 				? this.adminLink
 				: this.publicLink
 			try {
-				await this.$copyText(link)
+				await navigator.clipboard.writeText(link)
 				if (admin) {
 					this.adminLinkCopied = true
 					showSuccess(t('integration_visavid', 'Admin link copied!'))

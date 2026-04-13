@@ -1,5 +1,5 @@
 <template>
-	<Content app-name="integration_visavid">
+	<NcContent app-name="integration_visavid">
 		<VisavidNavigation
 			:rooms="rooms"
 			:selected-room-id="selectedRoomId"
@@ -8,7 +8,7 @@
 			@room-clicked="onRoomClicked"
 			@delete-room="onRoomDeleted"
 			@deleting-room="onDeletingRoom" />
-		<AppContent
+		<NcAppContent
 			:list-max-width="50"
 			:list-min-width="20"
 			:list-size="20"
@@ -18,26 +18,26 @@
 			</template-->
 			<RoomDetails v-if="selectedRoom"
 				:room="selectedRoom" />
-			<EmptyContent v-else-if="!state.is_configured">
+			<NcEmptyContent v-else-if="!state.is_configured">
 				<template #icon>
 					<CogIcon />
 				</template>
 				{{ t('integration_visavid', 'Application is not configured') }}
 				<a v-if="currentUser.isAdmin"
 					:href="configureUrl">
-					<Button
+					<NcButton
 						class="configureButton">
 						<template #icon>
 							<CogIcon />
 						</template>
 						{{ t('integration_visavid', 'Configure Visavid integration') }}
-					</Button>
+					</NcButton>
 				</a>
 				<p v-else>
 					{{ t('integration_visavid', 'Ask your administrator to configure this integration') }}
 				</p>
-			</EmptyContent>
-			<EmptyContent v-else-if="roomCount === 0">
+			</NcEmptyContent>
+			<NcEmptyContent v-else-if="roomCount === 0">
 				<template #icon>
 					<VisavidIcon />
 				</template>
@@ -54,41 +54,42 @@
 						{{ t('integration_visavid', 'Create a room') }}
 					</Button>
 				</span>
-			</EmptyContent>
-			<EmptyContent v-else>
+			</NcEmptyContent>
+			<NcEmptyContent v-else>
 				<template #icon>
 					<VisavidIcon />
 				</template>
 				{{ t('integration_visavid', 'No selected room') }}
-			</EmptyContent>
-		</AppContent>
-		<Modal v-if="creationModalOpen"
+			</NcEmptyContent>
+		</NcAppContent>
+		<NcModal v-if="creationModalOpen"
 			size="normal"
 			@close="closeCreationModal">
 			<CreationForm
 				@ok-clicked="onCreationValidate"
 				@cancel-clicked="closeCreationModal" />
-		</Modal>
-	</Content>
+		</NcModal>
+	</NcContent>
 </template>
 
 <script>
-import CogIcon from 'vue-material-design-icons/Cog'
-import PlusIcon from 'vue-material-design-icons/Plus'
-import Button from '@nextcloud/vue/dist/Components/Button'
-import AppContent from '@nextcloud/vue/dist/Components/AppContent'
-import Content from '@nextcloud/vue/dist/Components/Content'
-import Modal from '@nextcloud/vue/dist/Components/Modal'
-import EmptyContent from '@nextcloud/vue/dist/Components/EmptyContent'
+import CogIcon from 'vue-material-design-icons/Cog.vue'
+import PlusIcon from 'vue-material-design-icons/Plus.vue'
+
+import NcButton from '@nextcloud/vue/components/NcButton'
+import NcAppContent from '@nextcloud/vue/components/NcAppContent'
+import NcContent from '@nextcloud/vue/components/NcContent'
+import NcModal from '@nextcloud/vue/components/NcModal'
+import NcEmptyContent from '@nextcloud/vue/components/NcEmptyContent'
 
 import { generateUrl } from '@nextcloud/router'
 import { loadState } from '@nextcloud/initial-state'
 import { getCurrentUser } from '@nextcloud/auth'
 
-import VisavidNavigation from './components/VisavidNavigation'
-import CreationForm from './components/CreationForm'
-import RoomDetails from './components/RoomDetails'
-import VisavidIcon from './components/VisavidIcon'
+import VisavidNavigation from './components/VisavidNavigation.vue'
+import CreationForm from './components/CreationForm.vue'
+import RoomDetails from './components/RoomDetails.vue'
+import VisavidIcon from './components/VisavidIcon.vue'
 
 export default {
 	name: 'App',
@@ -100,11 +101,11 @@ export default {
 		VisavidNavigation,
 		CogIcon,
 		PlusIcon,
-		AppContent,
-		Content,
-		Modal,
-		EmptyContent,
-		Button,
+		NcAppContent,
+		NcContent,
+		NcModal,
+		NcEmptyContent,
+		NcButton,
 	},
 
 	props: {
@@ -148,7 +149,7 @@ export default {
 			this.creationModalOpen = false
 			const nbRooms = Object.values(this.rooms).length
 			room.id = nbRooms + 1
-			this.$set(this.rooms, room.id, room)
+			this.rooms[room.id] = room
 			console.debug(this.rooms)
 			this.selectedRoomId = room.id
 		},

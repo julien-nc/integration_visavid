@@ -34,15 +34,14 @@
 </template>
 
 <script>
+import ServerIcon from 'vue-material-design-icons/Server.vue'
+import LockIcon from 'vue-material-design-icons/Lock.vue'
+
 import { loadState } from '@nextcloud/initial-state'
 import { generateUrl } from '@nextcloud/router'
 import axios from '@nextcloud/axios'
-import { delay } from '../utils'
+import { delay } from '../utils.js'
 import { showSuccess, showError } from '@nextcloud/dialogs'
-// import '@nextcloud/dialogs/styles/toast.scss'
-
-import ServerIcon from 'vue-material-design-icons/Server'
-import LockIcon from 'vue-material-design-icons/Lock'
 
 export default {
 	name: 'AdminSettings',
@@ -88,7 +87,7 @@ export default {
 			}).catch((error) => {
 				showError(
 					t('integration_visavid', 'Failed to save Visavid admin options')
-						+ ': ' + (error.response?.request?.responseText ?? '')
+						+ ': ' + (error.response?.request?.responseText ?? ''),
 				)
 				console.debug(error)
 			}).then(() => {

@@ -1,6 +1,6 @@
 <template>
-	<AppNavigationItem v-show="!deleting"
-		:title="room.name"
+	<NcAppNavigationItem v-show="!deleting"
+		:name="room.name"
 		:class="{ selectedRoom: selected }"
 		:force-menu="false"
 		@click="onRoomClick">
@@ -11,51 +11,48 @@
 				:size="20" />
 		</template>
 		<template #actions>
-			<ActionButton
+			<NcActionButton
 				:close-after-click="true"
 				@click="onFavoriteClick">
 				<template #icon>
 					<StarIcon :size="20" />
 				</template>
 				{{ t('integration_visavid', 'Add to favorites') }}
-			</ActionButton>
-			<ActionButton
+			</NcActionButton>
+			<NcActionButton
 				:close-after-click="true"
 				@click="onDeleteClick">
 				<template #icon>
 					<DeleteIcon :size="20" />
 				</template>
 				{{ t('integration_visavid', 'Delete') }}
-			</ActionButton>
+			</NcActionButton>
 		</template>
-	</AppNavigationItem>
+	</NcAppNavigationItem>
 </template>
 
 <script>
-import StarIcon from 'vue-material-design-icons/Star'
-import DeleteIcon from 'vue-material-design-icons/Delete'
-import ForumIcon from 'vue-material-design-icons/Forum'
-import ForumOutlineIcon from 'vue-material-design-icons/ForumOutline'
-import ClickOutside from 'vue-click-outside'
+import StarIcon from 'vue-material-design-icons/Star.vue'
+import DeleteIcon from 'vue-material-design-icons/Delete.vue'
+import ForumIcon from 'vue-material-design-icons/Forum.vue'
+import ForumOutlineIcon from 'vue-material-design-icons/ForumOutline.vue'
 
-import ActionButton from '@nextcloud/vue/dist/Components/ActionButton'
-import AppNavigationItem from '@nextcloud/vue/dist/Components/AppNavigationItem'
+import NcActionButton from '@nextcloud/vue/components/NcActionButton'
+import NcAppNavigationItem from '@nextcloud/vue/components/NcAppNavigationItem'
+
 import { showUndo } from '@nextcloud/dialogs'
 
-import { Timer } from '../utils'
+import { Timer } from '../utils.js'
 
 export default {
 	name: 'RoomNavigationItem',
 	components: {
-		AppNavigationItem,
-		ActionButton,
+		NcAppNavigationItem,
+		NcActionButton,
 		ForumIcon,
 		ForumOutlineIcon,
 		DeleteIcon,
 		StarIcon,
-	},
-	directives: {
-		ClickOutside,
 	},
 	props: {
 		room: {

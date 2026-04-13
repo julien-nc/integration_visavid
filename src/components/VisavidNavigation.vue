@@ -1,7 +1,7 @@
 <template>
-	<AppNavigation>
+	<NcAppNavigation>
 		<template #list>
-			<AppNavigationNew v-if="isConfigured"
+			<NcAppNavigationNew v-if="isConfigured"
 				:text="t('integration_visavid', 'Create a room')"
 				button-class="icon-add"
 				@click="onCreateRoomClick" />
@@ -15,21 +15,22 @@
 				@deleting-room="onDeletingRoom" />
 		</template>
 		<!--template #footer></template-->
-	</AppNavigation>
+	</NcAppNavigation>
 </template>
 
 <script>
-import AppNavigationNew from '@nextcloud/vue/dist/Components/AppNavigationNew'
-import AppNavigation from '@nextcloud/vue/dist/Components/AppNavigation'
-import RoomNavigationItem from './RoomNavigationItem'
+import NcAppNavigationNew from '@nextcloud/vue/components/NcAppNavigationNew'
+import NcAppNavigation from '@nextcloud/vue/components/NcAppNavigation'
+
+import RoomNavigationItem from './RoomNavigationItem.vue'
 
 export default {
 	name: 'VisavidNavigation',
 
 	components: {
 		RoomNavigationItem,
-		AppNavigationNew,
-		AppNavigation,
+		NcAppNavigationNew,
+		NcAppNavigation,
 	},
 
 	props: {

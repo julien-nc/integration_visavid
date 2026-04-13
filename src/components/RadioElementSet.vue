@@ -7,21 +7,16 @@
 			:name="name"
 			:border-radius="borderRadius"
 			@update:checked="onUpdateValue">
-			<template v-if="$scopedSlots.icon || option.icon" #icon>
-				<slot name="icon" :option="option">
-					<component :is="option.icon"
-						v-if="option.icon" />
-				</slot>
+			<template v-if="option.icon" #icon>
+				<slot name="icon" :option="option" />
 			</template>
-			<slot name="label" :option="option">
-				{{ option.label }}
-			</slot>
+			<slot name="label" :option="option" />
 		</RadioElement>
 	</span>
 </template>
 
 <script>
-import RadioElement from './RadioElement'
+import RadioElement from './RadioElement.vue'
 
 export default {
 	name: 'RadioElementSet',

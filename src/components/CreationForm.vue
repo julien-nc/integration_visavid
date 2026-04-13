@@ -30,14 +30,14 @@
 						v-model="newRoom[fieldId]"
 						:placeholder="field.placeholder" />
 				</span>
-				<DatetimePicker v-else-if="field.type === 'ncDate'"
+				<NcDateTimePicker v-else-if="field.type === 'ncDate'"
 					:id="'room-' + fieldId"
 					v-model="newRoom[fieldId]"
 					type="date"
 					:placeholder="field.placeholder"
 					:clearable="true"
 					:confirm="false" />
-				<DatetimePicker v-else-if="field.type === 'ncDatetime'"
+				<NcDateTimePicker v-else-if="field.type === 'ncDatetime'"
 					:id="'room-' + fieldId"
 					v-model="newRoom[fieldId]"
 					type="datetime"
@@ -46,20 +46,20 @@
 					:clearable="true"
 					:confirm="true" />
 				<div v-else-if="field.type === 'ncColor'">
-					<ColorPicker
+					<NcColorPicker
 						:value="newRoom[fieldId]"
 						@input="updateColor($event, fieldId)">
 						<Button
 							v-tooltip.top="{ content: t('integration_visavid', 'Choose color') }"
 							:style="{ backgroundColor: newRoom[fieldId] }" />
-					</ColorPicker>
+					</NcColorPicker>
 				</div>
-				<Multiselect v-else-if="field.type === 'select'"
-					:value="newRoom[fieldId]"
+				<NcSelect v-else-if="field.type === 'select'"
+					:model-value="newRoom[fieldId]"
 					:options="Object.values(field.options)"
 					label="label"
 					:placeholder="field.placeholder"
-					@input="setSelectValue(fieldId, $event)"
+					@update:model-value="setSelectValue(fieldId, $event)"
 					@search-change="query = $event">
 					<template #option="{option}">
 						<component :is="option.icon"
@@ -77,23 +77,24 @@
 							{{ option.label }}
 						</span>
 					</template>
-				</Multiselect>
+				</NcSelect>
 				<RadioElementSet v-else-if="field.type === 'customRadioSet'"
 					:name="fieldId + '_radio'"
 					:options="field.options"
 					:value="newRoom[fieldId]"
 					@update:value="newRoom[fieldId] = $event">
-					<!--template #icon="{option}">
+					<template #icon="{option}">
+						<component :is="option.icon"
+							v-if="option.icon" />
+					</template>
+					<template #label="{option}">
 						{{ option.label }}
-					</template-->
-					<!--template-- #label="{option}">
-						{{ option.label + 'lala' }}
-					</template-->
+					</template>
 				</RadioElementSet>
 				<div v-else-if="field.type === 'ncRadioSet'">
-					<CheckboxRadioSwitch v-for="(option, id) in field.options"
+					<NcCheckboxRadioSwitch v-for="(option, id) in field.options"
 						:key="id"
-						:checked.sync="newRoom[fieldId]"
+						v-model="newRoom[fieldId]"
 						:value="id"
 						:name="fieldId + '_radio'"
 						type="radio"
@@ -105,12 +106,12 @@
 						<span class="option-title">
 							{{ option.label }}
 						</span>
-					</CheckboxRadioSwitch>
+					</NcCheckboxRadioSwitch>
 				</div>
 				<div v-else-if="field.type === 'ncCheckboxSet'">
-					<CheckboxRadioSwitch v-for="(option, id) in field.options"
+					<NcCheckboxRadioSwitch v-for="(option, id) in field.options"
 						:key="id"
-						:checked.sync="newRoom[fieldId]"
+						v-model="newRoom[fieldId]"
 						:value="id"
 						:name="fieldId + '_checkbox'"
 						class="ncradio">
@@ -121,11 +122,11 @@
 						<span class="option-title">
 							{{ option.label }}
 						</span>
-					</CheckboxRadioSwitch>
+					</NcCheckboxRadioSwitch>
 				</div>
 				<div v-else-if="field.type === 'ncSwitch'">
-					<CheckboxRadioSwitch
-						:checked.sync="newRoom[fieldId]"
+					<NcCheckboxRadioSwitch
+						v-model="newRoom[fieldId]"
 						type="switch"
 						class="ncradio">
 						<component :is="field.icon"
@@ -133,52 +134,54 @@
 							class="option-icon"
 							:size="20" />
 						{{ field.label }}
-					</CheckboxRadioSwitch>
+					</NcCheckboxRadioSwitch>
 				</div>
 				<div v-else-if="field.type === 'ncCheckbox'">
-					<CheckboxRadioSwitch
-						:checked.sync="newRoom[fieldId]"
+					<NcCheckboxRadioSwitch
+						v-model="newRoom[fieldId]"
 						class="ncradio">
 						<component :is="field.icon"
 							v-if="field.icon"
 							class="option-icon"
 							:size="20" />
 						{{ field.label }}
-					</CheckboxRadioSwitch>
+					</NcCheckboxRadioSwitch>
 				</div>
 			</div>
 		</div>
 		<div class="footer">
-			<Button @click="$emit('cancel-clicked')">
+			<NcButton @click="$emit('cancel-clicked')">
 				<template #icon>
 					<UndoIcon />
 				</template>
 				{{ t('integration_visavid', 'Cancel') }}
-			</Button>
-			<Button type="primary" @click="onOkClick">
+			</NcButton>
+			<NcButton variant="primary" @click="onOkClick">
 				<template #icon>
 					<CheckIcon />
 				</template>
 				{{ t('integration_visavid', 'Create') }}
-			</Button>
+			</NcButton>
 		</div>
 	</div>
 </template>
 
 <script>
-import PaletteIcon from 'vue-material-design-icons/Palette'
-import CheckIcon from 'vue-material-design-icons/Check'
-import UndoIcon from 'vue-material-design-icons/Undo'
-import Button from '@nextcloud/vue/dist/Components/Button'
-import Multiselect from '@nextcloud/vue/dist/Components/Multiselect'
-import ColorPicker from '@nextcloud/vue/dist/Components/ColorPicker'
-import DatetimePicker from '@nextcloud/vue/dist/Components/DatetimePicker'
-import Highlight from '@nextcloud/vue/dist/Components/Highlight'
-import CheckboxRadioSwitch from '@nextcloud/vue/dist/Components/CheckboxRadioSwitch'
+import PaletteIcon from 'vue-material-design-icons/Palette.vue'
+import CheckIcon from 'vue-material-design-icons/Check.vue'
+import UndoIcon from 'vue-material-design-icons/Undo.vue'
+
+import NcButton from '@nextcloud/vue/components/NcButton'
+import NcSelect from '@nextcloud/vue/components/NcSelect'
+import NcColorPicker from '@nextcloud/vue/components/NcColorPicker'
+import NcDateTimePicker from '@nextcloud/vue/components/NcDateTimePicker'
+import NcHighlight from '@nextcloud/vue/components/NcHighlight'
+import NcCheckboxRadioSwitch from '@nextcloud/vue/components/NcCheckboxRadioSwitch'
+
 import { showError } from '@nextcloud/dialogs'
 
-import { fields } from '../utils'
-import RadioElementSet from './RadioElementSet'
+import { fields } from '../utils.js'
+import RadioElementSet from './RadioElementSet.vue'
 
 export default {
 	name: 'CreationForm',
@@ -188,12 +191,12 @@ export default {
 		CheckIcon,
 		UndoIcon,
 		PaletteIcon,
-		Button,
-		Multiselect,
-		DatetimePicker,
-		ColorPicker,
-		Highlight,
-		CheckboxRadioSwitch,
+		NcButton,
+		NcSelect,
+		NcDateTimePicker,
+		NcColorPicker,
+		NcHighlight,
+		NcCheckboxRadioSwitch,
 	},
 
 	props: {
@@ -249,7 +252,7 @@ export default {
 		setSelectValue(fieldId, newValue) {
 			// this fixes the issue when selecting the currently select option
 			if (newValue !== null) {
-				this.$set(this.newRoom, fieldId, newValue)
+				this.newRoom[fieldId] = newValue
 			}
 		},
 		updateColor(color, fieldId) {
