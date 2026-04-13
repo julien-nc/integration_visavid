@@ -1,6 +1,7 @@
 <template>
 	<div class="roomDetails">
 		<h2>
+			<ForumOutlineIcon :size="20" />
 			{{ room.name }}
 		</h2>
 		<div class="links">
@@ -141,6 +142,7 @@ import ToggleSwitchIcon from 'vue-material-design-icons/ToggleSwitch.vue'
 import ToggleSwitchOffOutlineIcon from 'vue-material-design-icons/ToggleSwitchOffOutline.vue'
 import CheckboxMarkedIcon from 'vue-material-design-icons/CheckboxMarked.vue'
 import CheckboxBlankOutlineIcon from 'vue-material-design-icons/CheckboxBlankOutline.vue'
+import ForumOutlineIcon from 'vue-material-design-icons/ForumOutline.vue'
 
 import NcButton from '@nextcloud/vue/components/NcButton'
 
@@ -160,6 +162,7 @@ export default {
 		ToggleSwitchOffOutlineIcon,
 		CheckboxBlankOutlineIcon,
 		CheckboxMarkedIcon,
+		ForumOutlineIcon,
 		NcButton,
 	},
 
@@ -238,6 +241,9 @@ export default {
 	justify-content: center;
 	h2 {
 		margin: 12px 0 32px 0;
+		display: flex;
+		align-items: center;
+		gap: 8px;
 	}
 	.fields {
 		display: flex;

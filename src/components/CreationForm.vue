@@ -48,8 +48,8 @@
 				<div v-else-if="field.type === 'ncColor'">
 					<NcColorPicker
 						:value="newRoom[fieldId]"
-						@input="updateColor($event, fieldId)">
-						<Button
+						@update:model-value="updateColor($event, fieldId)">
+						<NcButton
 							v-tooltip.top="{ content: t('integration_visavid', 'Choose color') }"
 							:style="{ backgroundColor: newRoom[fieldId] }" />
 					</NcColorPicker>
@@ -61,21 +61,24 @@
 					:placeholder="field.placeholder"
 					@update:model-value="setSelectValue(fieldId, $event)"
 					@search-change="query = $event">
-					<template #option="{option}">
-						<component :is="option.icon"
-							v-if="option.icon"
-							class="option-icon"
-							:size="20" />
-						<Highlight :text="option.label" :search="query" class="option-title multiselect-option-title" />
+					<template #option="option">
+						<div style="display: flex; gap: 4px;">
+							<component :is="option.icon"
+								v-if="option.icon"
+								class="option-icon"
+								:size="20" />
+							<NcHighlight :text="option.label" :search="query" class="multiselect-option-title" />
+						</div>
 					</template>
-					<template #singleLabel="{option}">
-						<component :is="option.icon"
-							v-if="option.icon"
-							class="multiselect-label-icon"
-							:size="20" />
-						<span class="option-title">
-							{{ option.label }}
-						</span>
+					<template #selected-option="option">
+						<div style="display: flex; gap: 4px; width: 100%">
+							<component :is="option.icon"
+								v-if="option.icon"
+								:size="20" />
+							<span class="selected-option-title">
+								{{ option.label }}
+							</span>
+						</div>
 					</template>
 				</NcSelect>
 				<RadioElementSet v-else-if="field.type === 'customRadioSet'"
@@ -99,13 +102,15 @@
 						:name="fieldId + '_radio'"
 						type="radio"
 						class="ncradio">
-						<component :is="option.icon"
-							v-if="option.icon"
-							class="option-icon"
-							:size="20" />
-						<span class="option-title">
-							{{ option.label }}
-						</span>
+						<div class="switch-inner">
+							<component :is="option.icon"
+								v-if="option.icon"
+								class="option-icon"
+								:size="20" />
+							<span>
+								{{ option.label }}
+							</span>
+						</div>
 					</NcCheckboxRadioSwitch>
 				</div>
 				<div v-else-if="field.type === 'ncCheckboxSet'">
@@ -115,13 +120,15 @@
 						:value="id"
 						:name="fieldId + '_checkbox'"
 						class="ncradio">
-						<component :is="option.icon"
-							v-if="option.icon"
-							class="option-icon"
-							:size="20" />
-						<span class="option-title">
-							{{ option.label }}
-						</span>
+						<div class="switch-inner">
+							<component :is="option.icon"
+								v-if="option.icon"
+								class="option-icon"
+								:size="20" />
+							<span>
+								{{ option.label }}
+							</span>
+						</div>
 					</NcCheckboxRadioSwitch>
 				</div>
 				<div v-else-if="field.type === 'ncSwitch'">
@@ -129,28 +136,32 @@
 						v-model="newRoom[fieldId]"
 						type="switch"
 						class="ncradio">
-						<component :is="field.icon"
-							v-if="field.icon"
-							class="option-icon"
-							:size="20" />
-						{{ field.label }}
+						<div class="switch-inner">
+							<component :is="field.icon"
+								v-if="field.icon"
+								class="option-icon"
+								:size="20" />
+							{{ field.label }}
+						</div>
 					</NcCheckboxRadioSwitch>
 				</div>
 				<div v-else-if="field.type === 'ncCheckbox'">
 					<NcCheckboxRadioSwitch
 						v-model="newRoom[fieldId]"
 						class="ncradio">
-						<component :is="field.icon"
-							v-if="field.icon"
-							class="option-icon"
-							:size="20" />
-						{{ field.label }}
+						<div class="switch-inner">
+							<component :is="field.icon"
+								v-if="field.icon"
+								class="option-icon"
+								:size="20" />
+							{{ field.label }}
+						</div>
 					</NcCheckboxRadioSwitch>
 				</div>
 			</div>
 		</div>
 		<div class="footer">
-			<NcButton @click="$emit('cancel-clicked')">
+			<NcButton variant="tertiary" @click="$emit('cancel-clicked')">
 				<template #icon>
 					<UndoIcon />
 				</template>
@@ -263,12 +274,28 @@ export default {
 </script>
 
 <style scoped lang="scss">
+:deep(.multiselect-option-title) {
+	text-overflow: ellipsis;
+	overflow: hidden;
+	white-space: nowrap;
+}
+
+:deep(.selected-option-title) {
+	text-overflow: ellipsis;
+	overflow: hidden;
+	white-space: nowrap;
+}
+
 .creationForm {
 	display: flex;
 	flex-direction: column;
 	align-items: center;
 	justify-content: center;
 	padding: 12px;
+
+	h2 {
+		margin-top: 0;
+	}
 
 	.fields {
 		display: flex;
@@ -304,17 +331,6 @@ export default {
 				margin-left: 4px;
 				margin-right: 8px;
 			}
-			.multiselect-label-icon {
-				margin-right: 12px;
-			}
-			.option-title {
-				// nothing
-			}
-			.multiselect-option-title {
-				text-overflow: ellipsis;
-				overflow: hidden;
-				white-space: nowrap;
-			}
 			.textarea-wrapper {
 				textarea {
 					height: 65px;
@@ -331,15 +347,24 @@ export default {
 					margin-bottom: 8px;
 				}
 			}
+			.switch-inner {
+				display: flex;
+				align-items: center;
+			}
 		}
 	}
 
 	.footer {
+		width: 100%;
 		display: flex;
 		align-items: center;
-		margin-top: 12px;
+		justify-content: right;
+		padding: 8px 0;
+		position: sticky;
+		bottom: 0;
+		background-color: var(--color-main-background);
 		> * {
-			margin: 0 10px 0 10px;
+			margin: 0 4px;
 		}
 	}
 }
